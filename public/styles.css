@@ -1,0 +1,13 @@
+* {
+  font-family: 'Courier Prime', monospace;
+}
+
+html {
+  height: 100vh;
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+}
