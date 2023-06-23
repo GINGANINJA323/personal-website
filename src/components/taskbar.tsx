@@ -3,8 +3,24 @@ import { styled } from 'styled-components';
 import Menu from './menu';
 
 interface TaskbarProps {
-
+  setMenuOpen: (value: Boolean) => void;
+  menuOpen: Boolean;
 }
+
+const MenuButton = styled.button`
+  width: 80px;
+  height: 1.7em;
+  align-self: center;
+  margin-left: 5px;
+  border-radius: 0px;
+`;
+
+const Clock = styled.p`
+  width: 50px;
+  align-self: center;
+  border: 2px inset;
+  margin-right: 5px;
+`;
 
 const TaskbarContainer = styled.div`
   position: absolute;
@@ -13,12 +29,15 @@ const TaskbarContainer = styled.div`
   background-color: #c3c3c3;
   bottom: 0;
   display: flex;
+  justify-content: space-between;
 `;
 
 const Taskbar = (props: TaskbarProps) => {
+  const { setMenuOpen, menuOpen } = props;
   return (
     <TaskbarContainer>
-
+      <MenuButton onClick={() => setMenuOpen(!menuOpen)}>Menu</MenuButton>
+      <Clock>{`${new Date().getHours()}:${new Date().getMinutes()}`}</Clock>
     </TaskbarContainer>
   );
 }

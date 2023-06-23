@@ -1,33 +1,47 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import type { MenuOptionType } from '../types';
+import MenuOption from './menu-option';
 
 interface MenuProps {
-  setMenuOpen: (newState: boolean) => void;
-  menuOpen: boolean;
+  menuOptions: MenuOptionType[];
 }
-
-const MenuButton = styled.button`
-  width: 80px;
-  height: 1.7em;
-  align-self: center;
-  margin-left: 5px;
-  border-radius: 0px;
-`;
 
 const MenuContainer = styled.div`
   width: 220px;
-  height: 10em;
   background-color: #c3c3c3;  
   border-radius: 0px;
+  position: fixed;
+  bottom: 0;
+  height: 14em;
+
+  @keyframes rollup {
+    from {
+      height: 0em;
+    }
+    to {
+      height: 14em;
+    }
+  }
+
+  button:hover {
+    background-color: #010081;
+    color: #FFF;
+  }
+
+  animation-name: rollup;
+  animation-duration: 0.2s;
 `;
 
-const Menu = (props: MenuProps) => {
-  const { setMenuOpen, menuOpen } = props;
+const Menu = React.forwardRef((props: MenuProps, ref) => {
+  const { menuOptions } = props;
   return (
-    <>
-      <MenuButton onClick={() => setMenuOpen(!menuOpen)}>Menu</MenuButton>
-    </>
+    <MenuContainer ref={ref}>
+      {
+        menuOptions.map(o => <MenuOption key={o.label} {...o} />)
+      }
+    </MenuContainer>
   );
-}
+})
 
 export default Menu;

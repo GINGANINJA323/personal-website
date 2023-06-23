@@ -5,19 +5,19 @@ interface IconProps {
   text: string
 }
 
-const IconContainer = styled.div`
+const DesktopIconContainer = styled.div`
 
 `;
 
-const IconText = styled.p``;
+const DesktopIconText = styled.p``;
 
-const Icon = (props: IconProps) => {
+const DesktopIcon = (props: IconProps) => {
   const { text } = props;
   return (
-    <IconContainer>
-      <IconText>{text}</IconText>
-    </IconContainer>
+    <DesktopIconContainer>
+      <DesktopIconText>{text}</DesktopIconText>
+    </DesktopIconContainer>
   );
 }
 
-export default Icon;
+export default DesktopIcon;

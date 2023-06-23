@@ -1,0 +1,9 @@
+.container {
+  height: 100vh;
+  background-color: #FFF;
+  margin: 0;
+}
+
+body, h1 {
+  margin: 0;
+}
