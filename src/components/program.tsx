@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { styled } from 'styled-components';
+import { useDrag } from 'react-dnd';
 
 interface ProgramProps {
   contentId: string;
@@ -41,6 +42,11 @@ const ProgramIFrame = styled.iframe`
 
 const Program = (props: ProgramProps) => {
   const { contentId, name, close } = props;
+  const [collected, drag] = useDrag(() => ({
+    type: 'program',
+    item: {}
+  }));
+
   return (
     <ProgramContainer>
       <ProgramHeader>

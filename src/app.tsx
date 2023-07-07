@@ -1,28 +1,50 @@
 import * as React from 'react';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import styled from 'styled-components';
+import DesktopIcon from './components/icon';
 import Menu from './components/menu';
 import Program from './components/program';
 import Taskbar from './components/taskbar';
-import { closeOnDeFocus } from './utils';
+import { DndProvider } from 'react-dnd';
+import { useDrop } from 'react-dnd';
 
-const Desktop = styled.div`
+const StyledDesktop = styled.div`
     display: flex;
     height: 100vh;
     width: 100%;
     background-color: #008080;
 `;
 
+interface DesktopProps {
+    children: (JSX.Element | null)[]
+};
+
+const Desktop = (props: DesktopProps) => {
+    const { children } = props;
+    const [collectedProps, drop] = useDrop(() => ({
+        accept: 'program'
+      }))
+    return (
+        <StyledDesktop ref={drop}>
+            {children}
+        </StyledDesktop>    
+    )
+}
+
+const IconContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
 const App = () => {
     const [menuOpen, setMenuOpen] = React.useState(false);
     const [openPages, setOpenPages] = React.useState<string[]>([]);
 
+    const dIAboutRef = React.useRef(null);
+    const dIProjectsRef = React.useRef(null);
+    const dICVRef = React.useRef(null);
+    const dIWebCodeRef = React.useRef(null);
     const menuRef = React.useRef(null);
-    const handleOutsideClick = (event: Event) => {
-        if (menuRef.current && !menuRef.current.contains(event.target)) {
-            console.log('Triggered!')
-            setMenuOpen(false);
-        }
-    }
 
     const openPage = (page: string): void => {
         setOpenPages([...openPages, page]);
@@ -31,12 +53,6 @@ const App = () => {
     const closePage = (page: string): void => {
         setOpenPages(openPages.filter(p => p !== page));
     }
-
-    React.useEffect(() => {
-        window.addEventListener("mousedown", handleOutsideClick);
-
-        return window.removeEventListener("mousedown", handleOutsideClick);
-    }, [menuRef]);
 
     const menuOptions = [
         {
@@ -47,30 +63,47 @@ const App = () => {
         {
             label: 'Projects',
             icon: '',
-            onClick: () => console.log('Projects pressed')
+            onClick: () => openPage('projects')
         },
         {
             label: 'CV',
             icon: '',
-            onClick: () => console.log('CV pressed')
+            onClick: () => openPage('cv')
         },
         {
             label: 'Website Code',
             icon: '',
-            onClick: () => console.log('Webcode pressed')
+            onClick: () => openPage('webcode')
         }
     ]
 
     return (
-        <Desktop>
-            {
-                menuOpen ? <Menu menuOptions={menuOptions} ref={menuRef} /> : null
-            }
-            {
-                openPages.includes('about') ? <Program contentId={'about'} name={'About'} close={closePage} /> : null
-            }
-            <Taskbar setMenuOpen={setMenuOpen} menuOpen={menuOpen} />
-        </Desktop>
+        <DndProvider backend={HTML5Backend}>
+            <Desktop>
+                {
+                    menuOpen ? <Menu closeMenu={() => setMenuOpen(false) } menuOptions={menuOptions} ref={menuRef} /> : null
+                }
+                {
+                    openPages.includes('about') ? <Program contentId={'about'} name={'About'} close={closePage} /> : null
+                }
+                {
+                    openPages.includes('projects') ? <Program contentId={'projects'} name={'My Projects'} close={closePage} /> : null
+                }
+                {
+                    openPages.includes('cv') ? <Program contentId={'cv'} name={'My CV'} close={closePage} /> : null
+                }
+                {
+                    openPages.includes('webcode') ? <Program contentId={'webcode'} name={'Website Code'} close={closePage} /> : null
+                }
+                <IconContainer>
+                    <DesktopIcon text={'About Me'} iconName={'address_book_user'} onClick={() => openPage('about')} ref={dIAboutRef} />
+                    <DesktopIcon text={'Projects'} iconName={'windows_three'} onClick={() => openPage('projects')} ref={dIProjectsRef} />
+                    <DesktopIcon text={'CV'} iconName={'winrep-1'} onClick={() => openPage('cv')} ref={dICVRef} />
+                    <DesktopIcon text={'Website Code'} iconName={'channels_file-2'} onClick={() => openPage('webcode')} ref={dIWebCodeRef} />
+                </IconContainer>
+                <Taskbar setMenuOpen={setMenuOpen} menuOpen={menuOpen} />
+            </Desktop>
+        </DndProvider>
     );
 }
 

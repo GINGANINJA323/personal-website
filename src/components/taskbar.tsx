@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { styled } from 'styled-components';
-import Menu from './menu';
 
 interface TaskbarProps {
-  setMenuOpen: (value: Boolean) => void;
+  setMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
   menuOpen: Boolean;
 }
 
@@ -13,6 +12,9 @@ const MenuButton = styled.button`
   align-self: center;
   margin-left: 5px;
   border-radius: 0px;
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 const Clock = styled.p`

@@ -5,6 +5,7 @@ import MenuOption from './menu-option';
 
 interface MenuProps {
   menuOptions: MenuOptionType[];
+  closeMenu: () => void;
 }
 
 const MenuContainer = styled.div`
@@ -34,7 +35,21 @@ const MenuContainer = styled.div`
 `;
 
 const Menu = React.forwardRef((props: MenuProps, ref) => {
-  const { menuOptions } = props;
+  const { menuOptions, closeMenu } = props;
+
+  const handleOutsideClick = (event: Event) => {
+    if (ref && ref.current && !ref.current.contains(event.target)) {
+        console.log(event.target);
+        closeMenu();
+    }
+  }
+
+  React.useEffect(() => {
+    window.addEventListener("mousedown", handleOutsideClick);
+
+    return window.removeEventListener("mousedown", handleOutsideClick);
+  }, [ref]);
+
   return (
     <MenuContainer ref={ref}>
       {
