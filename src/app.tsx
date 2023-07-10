@@ -81,7 +81,7 @@ const App = () => {
         <DndProvider backend={HTML5Backend}>
             <Desktop>
                 {
-                    menuOpen ? <Menu closeMenu={() => setMenuOpen(false) } menuOptions={menuOptions} ref={menuRef} /> : null
+                    menuOpen ? <Menu closeMenu={() => setMenuOpen(false)} menuOptions={menuOptions} ref={menuRef} /> : null
                 }
                 {
                     openPages.includes('about') ? <Program contentId={'about'} name={'About'} close={closePage} /> : null

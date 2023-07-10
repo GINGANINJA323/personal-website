@@ -37,7 +37,7 @@ const DesktopIcon = React.forwardRef((props: IconProps, ref) => {
     window.addEventListener('dblclick', handleDblClick);
 
     return () => window.removeEventListener('dblclick', handleDblClick);
-  })
+  }, [])
 
   return (
     <DesktopIconContainer ref={ref}>
