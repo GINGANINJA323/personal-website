@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from 'styled-components';
-import { getFormattedTime } from '../utils';
+import { getFormattedTime, getDate } from '../utils';
 
 interface TaskbarProps {
   setMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,6 +23,7 @@ const Clock = styled.p`
   align-self: center;
   border: 2px inset;
   margin-right: 5px;
+  cursor: default;
 `;
 
 const TaskbarContainer = styled.div`
@@ -46,7 +47,7 @@ const Taskbar = (props: TaskbarProps) => {
   return (
     <TaskbarContainer>
       <MenuButton onClick={() => setMenuOpen(!menuOpen)}>Menu</MenuButton>
-      <Clock>{getFormattedTime(time)}</Clock>
+      <Clock title={getDate(time)}>{getFormattedTime(time)}</Clock>
     </TaskbarContainer>
   );
 }
