@@ -4,6 +4,17 @@
   margin: 0;
 }
 
+@font-face {
+  font-family: 'W95FA';
+  src: url('../assets/fonts/W95FA.otf') format('truetype'),
+  url('../assets/fonts/w95FA.woff') format('woff'),
+  url('../assets/fonts/w95FA.woff2') format('woff2');
+}
+
+* {
+  font-family: 'W95FA', 'Courier Prime';
+}
+
 body, h1 {
   margin: 0;
 }
