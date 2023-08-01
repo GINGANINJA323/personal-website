@@ -15,3 +15,7 @@ export const getDate = (date: Date) => {
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   return `${days[date.getDay()]}, ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
 }
+
+export const capitalise = (string: String) => {
+  return `${string.charAt(0).toLocaleUpperCase()}${string.slice(1)}`;
+}

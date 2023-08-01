@@ -5,6 +5,7 @@ import DesktopIcon from './components/icon';
 import Menu from './components/menu';
 import Program from './components/program';
 import Taskbar from './components/taskbar';
+import { StringObject } from './types';
 import { DndProvider } from 'react-dnd';
 import { useDrop } from 'react-dnd';
 
@@ -38,7 +39,12 @@ const IconContainer = styled.div`
 
 const App = () => {
     const [menuOpen, setMenuOpen] = React.useState(false);
-    const [openPages, setOpenPages] = React.useState<string[]>([]);
+    const [pages, setPages] = React.useState<StringObject>({
+        projects: 'closed',
+        cv: 'closed',
+        about: 'closed',
+        webcode: 'closed'
+    });
 
     const dIAboutRef = React.useRef(null);
     const dIProjectsRef = React.useRef(null);
@@ -47,32 +53,38 @@ const App = () => {
     const menuRef = React.useRef(null);
 
     const openPage = (page: string): void => {
-        setOpenPages([...openPages, page]);
+        setPages({ ...pages, [page]: 'open' });
     }
 
     const closePage = (page: string): void => {
-        setOpenPages(openPages.filter(p => p !== page));
+        setPages({ ...pages, [page]: 'closed' });
     }
+
+    const minimisePage = (page: string): void => {
+        setPages({ ...pages, [page]: 'minimised' });
+    }
+
+    console.log(pages);
 
     const menuOptions = [
         {
-            label: 'About',
-            icon: '',
+            label: 'About Me',
+            icon: 'address_book_user',
             onClick: () => openPage('about')
         },
         {
             label: 'Projects',
-            icon: '',
+            icon: 'windows_three',
             onClick: () => openPage('projects')
         },
         {
             label: 'CV',
-            icon: '',
+            icon: 'winrep-1',
             onClick: () => openPage('cv')
         },
         {
             label: 'Website Code',
-            icon: '',
+            icon: 'channels_file-2',
             onClick: () => openPage('webcode')
         }
     ]
@@ -84,16 +96,16 @@ const App = () => {
                     menuOpen ? <Menu closeMenu={() => setMenuOpen(false)} menuOptions={menuOptions} ref={menuRef} /> : null
                 }
                 {
-                    openPages.includes('about') ? <Program contentId={'about'} name={'About'} close={closePage} /> : null
+                    pages['about'] === 'open' ? <Program contentId={'about'} name={'About'} close={closePage} minimise={minimisePage} /> : null
                 }
                 {
-                    openPages.includes('projects') ? <Program contentId={'projects'} name={'My Projects'} close={closePage} /> : null
+                    pages['projects'] === 'open' ? <Program contentId={'projects'} name={'My Projects'} close={closePage} minimise={minimisePage} /> : null
                 }
                 {
-                    openPages.includes('cv') ? <Program contentId={'cv'} name={'My CV'} close={closePage} /> : null
+                    pages['cv'] === 'open' ? <Program contentId={'cv'} name={'My CV'} close={closePage} minimise={minimisePage} /> : null
                 }
                 {
-                    openPages.includes('webcode') ? <Program contentId={'webcode'} name={'Website Code'} close={closePage} /> : null
+                    pages['webcode'] === 'open' ? <Program contentId={'webcode'} name={'Website Code'} close={closePage} minimise={minimisePage} /> : null
                 }
                 <IconContainer>
                     <DesktopIcon text={'About Me'} iconName={'address_book_user'} onClick={() => openPage('about')} ref={dIAboutRef} />
@@ -101,7 +113,7 @@ const App = () => {
                     <DesktopIcon text={'CV'} iconName={'winrep-1'} onClick={() => openPage('cv')} ref={dICVRef} />
                     <DesktopIcon text={'Website Code'} iconName={'channels_file-2'} onClick={() => openPage('webcode')} ref={dIWebCodeRef} />
                 </IconContainer>
-                <Taskbar setMenuOpen={setMenuOpen} menuOpen={menuOpen} />
+                <Taskbar setMenuOpen={setMenuOpen} menuOpen={menuOpen} pages={pages} openPage={openPage} />
             </Desktop>
         </DndProvider>
     );

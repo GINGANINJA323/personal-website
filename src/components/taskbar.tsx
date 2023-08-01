@@ -1,10 +1,17 @@
 import * as React from 'react';
+import { StringObject } from '../types';
 import { styled } from 'styled-components';
-import { getFormattedTime, getDate } from '../utils';
+import { getFormattedTime, getDate, capitalise } from '../utils';
 
 interface TaskbarProps {
   setMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
   menuOpen: Boolean;
+  pages: StringObject;
+  openPage: (page: string) => void;
+}
+
+interface OpenPageProps {
+  open: Boolean;
 }
 
 const MenuButton = styled.button`
@@ -36,8 +43,27 @@ const TaskbarContainer = styled.div`
   justify-content: space-between;
 `;
 
+const PagesContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+`;
+
+const OpenPage = styled.button<OpenPageProps>`
+  width: 160px;
+  height: 1.7em;
+  align-self: center;
+  margin-left: 5px;
+  border-radius: 0px;
+  text-align: left;
+  border-style: ${props => props.open ? 'inset' : 'outset'};
+  :hover {
+    cursor: pointer;
+  }
+`;
+
 const Taskbar = (props: TaskbarProps) => {
-  const { setMenuOpen, menuOpen } = props;
+  const { setMenuOpen, menuOpen, pages, openPage } = props;
   const [time, setTime] = React.useState(new Date());
 
   React.useEffect(() => {
@@ -47,6 +73,17 @@ const Taskbar = (props: TaskbarProps) => {
   return (
     <TaskbarContainer>
       <MenuButton onClick={() => setMenuOpen(!menuOpen)}>Menu</MenuButton>
+      <PagesContainer>
+        {
+          Object.keys(pages)
+            .filter(p => pages[p] === 'minimised' || pages[p] === 'open')
+            .map(p => 
+              <OpenPage key={p} onClick={() => openPage(p)} open={pages[p] === 'open'}>
+                {capitalise(p)}
+              </OpenPage>
+            )
+        }
+      </PagesContainer>
       <Clock title={getDate(time)}>{getFormattedTime(time)}</Clock>
     </TaskbarContainer>
   );

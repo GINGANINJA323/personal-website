@@ -12,6 +12,16 @@ const MenuOptionButton = styled.button`
   flex-direction: row;
   width: 100%;
   border-radius: 0px;
+  align-items: center;
+`;
+
+const Icon = styled.img`
+  height: 24px;
+  width: 24px;
+`;
+
+const OptionLabel = styled.p`
+  margin-left: 10px;
 `;
 
 const MenuOption = (props: MenuOptionProps) => {
@@ -19,8 +29,8 @@ const MenuOption = (props: MenuOptionProps) => {
 
   return (
     <MenuOptionButton onClick={onClick}>
-      <img />
-      <p>{label}</p>
+      <Icon width={32} height={32} src={`/assets/${icon}.png`}></Icon>
+      <OptionLabel>{label}</OptionLabel>
     </MenuOptionButton>
   );
 }

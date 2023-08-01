@@ -3,3 +3,7 @@ export interface MenuOptionType {
   onClick: () => any;
   label: string;
 }
+
+interface StringObject {
+  [key: string]: string;
+}

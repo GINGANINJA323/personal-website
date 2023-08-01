@@ -6,6 +6,7 @@ interface ProgramProps {
   contentId: string;
   name: string;
   close: (page: string) => void;
+  minimise: (page: string) => void;
 }
 
 const ProgramContainer = styled.div`
@@ -23,7 +24,13 @@ const ProgramHeader = styled.div`
   justify-content: space-between;
   height: 30px;
   width: 100%;
-`
+`;
+
+const ProgramButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
 const ProgramLabel = styled.h2`
   color: #000;
   height: 100%;
@@ -31,7 +38,7 @@ const ProgramLabel = styled.h2`
   margin: 0;
 `;
 
-const CloseButton = styled.button`
+const HeaderButton = styled.button`
   border: none;
 `;
 
@@ -41,7 +48,7 @@ const ProgramIFrame = styled.iframe`
 `
 
 const Program = (props: ProgramProps) => {
-  const { contentId, name, close } = props;
+  const { contentId, name, close, minimise } = props;
   const [collected, drag] = useDrag(() => ({
     type: 'program',
     item: {}
@@ -51,7 +58,10 @@ const Program = (props: ProgramProps) => {
     <ProgramContainer>
       <ProgramHeader>
         <ProgramLabel>{name}</ProgramLabel>
-        <CloseButton onClick={() => close(contentId)}>{'X'}</CloseButton>
+        <ProgramButtonContainer>
+          <HeaderButton onClick={() => minimise(contentId)}>{'_'}</HeaderButton>
+          <HeaderButton onClick={() => close(contentId)}>{'X'}</HeaderButton>
+        </ProgramButtonContainer>
       </ProgramHeader>
       <ProgramIFrame src={`/content/${contentId}.html`}></ProgramIFrame>
     </ProgramContainer>

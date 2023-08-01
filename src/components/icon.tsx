@@ -28,7 +28,6 @@ const DesktopIcon = React.forwardRef((props: IconProps, ref) => {
 
   const handleDblClick = (event: any) => {
     if (ref && ref.current && ref.current.contains(event.target)) {
-      console.log(event.target);
       onClick();
     }
   }
