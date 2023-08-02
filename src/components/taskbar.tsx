@@ -8,6 +8,7 @@ interface TaskbarProps {
   menuOpen: Boolean;
   pages: StringObject;
   openPage: (page: string) => void;
+  minimisePage: (page: string) => void;
 }
 
 interface OpenPageProps {
@@ -63,7 +64,7 @@ const OpenPage = styled.button<OpenPageProps>`
 `;
 
 const Taskbar = (props: TaskbarProps) => {
-  const { setMenuOpen, menuOpen, pages, openPage } = props;
+  const { setMenuOpen, menuOpen, pages, openPage, minimisePage } = props;
   const [time, setTime] = React.useState(new Date());
 
   React.useEffect(() => {
@@ -78,7 +79,7 @@ const Taskbar = (props: TaskbarProps) => {
           Object.keys(pages)
             .filter(p => pages[p] === 'minimised' || pages[p] === 'open')
             .map(p => 
-              <OpenPage key={p} onClick={() => openPage(p)} open={pages[p] === 'open'}>
+              <OpenPage key={p} onClick={() => pages[p] === 'open' ? minimisePage(p) : openPage(p)} open={pages[p] === 'open'}>
                 {capitalise(p)}
               </OpenPage>
             )

@@ -51,9 +51,10 @@ const App = () => {
     const dICVRef = React.useRef(null);
     const dIWebCodeRef = React.useRef(null);
     const menuRef = React.useRef(null);
-
+    
+    // Uses the callback as pages was not being updated within the function
     const openPage = (page: string): void => {
-        setPages({ ...pages, [page]: 'open' });
+        setPages((oldPages: StringObject) => ({ ...oldPages, [page]: 'open' }));
     }
 
     const closePage = (page: string): void => {
@@ -113,7 +114,7 @@ const App = () => {
                     <DesktopIcon text={'CV'} iconName={'winrep-1'} onClick={() => openPage('cv')} ref={dICVRef} />
                     <DesktopIcon text={'Website Code'} iconName={'channels_file-2'} onClick={() => openPage('webcode')} ref={dIWebCodeRef} />
                 </IconContainer>
-                <Taskbar setMenuOpen={setMenuOpen} menuOpen={menuOpen} pages={pages} openPage={openPage} />
+                <Taskbar setMenuOpen={setMenuOpen} menuOpen={menuOpen} pages={pages} openPage={openPage} minimisePage={minimisePage} />
             </Desktop>
         </DndProvider>
     );
