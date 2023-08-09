@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { StringObject } from '../types';
+import { PagesObject } from '../types';
 import { styled } from 'styled-components';
 import { getFormattedTime, getDate, capitalise } from '../utils';
 
 interface TaskbarProps {
   setMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
   menuOpen: Boolean;
-  pages: StringObject;
+  pages: PagesObject;
   openPage: (page: string) => void;
   minimisePage: (page: string) => void;
 }
@@ -77,9 +77,9 @@ const Taskbar = (props: TaskbarProps) => {
       <PagesContainer>
         {
           Object.keys(pages)
-            .filter(p => pages[p] === 'minimised' || pages[p] === 'open')
+            .filter(p => pages[p].open)
             .map(p => 
-              <OpenPage key={p} onClick={() => pages[p] === 'open' ? minimisePage(p) : openPage(p)} open={pages[p] === 'open'}>
+              <OpenPage key={p} onClick={() => pages[p].state !== 'minimised' ? minimisePage(p) : openPage(p)} open={pages[p].state !== 'minimised'}>
                 {capitalise(p)}
               </OpenPage>
             )

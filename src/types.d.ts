@@ -4,6 +4,10 @@ export interface MenuOptionType {
   label: string;
 }
 
-interface StringObject {
-  [key: string]: string;
+interface PagesObject {
+  [key: string]: {
+    open: boolean;
+    state: 'minimised' | 'maximised' | 'default';
+    prevState: 'minimised' | 'maximised' | 'default' | null;
+  }
 }
