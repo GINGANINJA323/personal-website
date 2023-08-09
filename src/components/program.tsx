@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { styled } from 'styled-components';
-import { useDrag } from 'react-dnd';
 import { PagesObject } from '../types';
+import Draggable from 'react-draggable';
+import { Resizable } from 'react-resizable';
 
 interface ProgramProps {
   contentId: string;
@@ -12,12 +13,12 @@ interface ProgramProps {
   pages: PagesObject;
 }
 
-const ProgramContainer = styled.div<{ width: string, height: string }>`
+const ProgramContainer = styled.div<{ width: number, height: number }>`
   position: absolute;
   display: flex;
   flex-direction: column;
-  height: ${props => props.height || '10em'};
-  width: ${props => props.width || '10em'};
+  height: ${props => props.height}px;
+  width: ${props => props.width}px;
   border: 2px #c3c3c3 inset;
 `;
 
@@ -53,12 +54,8 @@ const ProgramIFrame = styled.iframe`
 
 const Program = (props: ProgramProps) => {
   const { contentId, name, close, minimise, maximise, pages } = props;
-  const maximised = [`calc(${window.innerWidth}px - 5px)`, `calc(${window.innerHeight}px - 30px)`];
-  const [size, setSize] = React.useState(['304px', '164px']);
-  const [collected, drag] = useDrag(() => ({
-    type: 'program',
-    item: {}
-  }));
+  const maximised = {width: window.innerWidth - 5, height: window.innerHeight - 30};
+  const [size, setSize] = React.useState({width: 304, height: 164});
 
   React.useEffect(() => {
     if (pages[contentId].state === 'maximised') {
@@ -66,18 +63,27 @@ const Program = (props: ProgramProps) => {
     }
   }, [pages]);
 
+  const onResize = (event, { element, size, handle }) => {
+    event.stopPropagation();
+    setSize({width: size.width, height: size.height})
+  }
+
   return (
-    <ProgramContainer ref={drag} width={size[0]} height={size[1]}>
-      <ProgramHeader>
-        <ProgramLabel>{name}</ProgramLabel>
-        <ProgramButtonContainer>
-          <HeaderButton onClick={() => minimise(contentId)}>{'_'}</HeaderButton>
-          <HeaderButton onClick={() => maximise(contentId)}>{'☐'}</HeaderButton>
-          <HeaderButton onClick={() => close(contentId)}>{'X'}</HeaderButton>
-        </ProgramButtonContainer>
-      </ProgramHeader>
-      <ProgramIFrame src={`/content/${contentId}.html`}></ProgramIFrame>
-    </ProgramContainer>
+    <Draggable handle='.handle'>
+      <Resizable resizeHandles={['se']} width={size.width} height={size.height} onResize={onResize} lockAspectRatio={false} minConstraints={[304, 164]}>
+        <ProgramContainer width={size.width} height={size.height}>
+          <ProgramHeader className='handle'>
+            <ProgramLabel>{name}</ProgramLabel>
+            <ProgramButtonContainer>
+              <HeaderButton onClick={() => minimise(contentId)}>{'_'}</HeaderButton>
+              <HeaderButton onClick={() => maximise(contentId)}>{'☐'}</HeaderButton>
+              <HeaderButton onClick={() => close(contentId)}>{'X'}</HeaderButton>
+            </ProgramButtonContainer>
+          </ProgramHeader>
+          <ProgramIFrame src={`/content/${contentId}.html`}></ProgramIFrame>
+        </ProgramContainer>
+      </Resizable>
+    </Draggable>
   );
 }
 

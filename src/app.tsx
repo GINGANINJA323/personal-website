@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { HTML5Backend } from 'react-dnd-html5-backend';
 import styled from 'styled-components';
 import DesktopIcon from './components/icon';
 import Menu from './components/menu';
 import Program from './components/program';
 import Taskbar from './components/taskbar';
 import { PagesObject } from './types';
-import { DndProvider, useDrop } from 'react-dnd';
+import '../node_modules/react-resizable/css/styles.css';
 
 interface DesktopProps {
     children: (JSX.Element | null)[];
@@ -14,9 +13,6 @@ interface DesktopProps {
 
 const Desktop = (props: DesktopProps) => {
     const { children } = props;
-    const [_, drop] = useDrop(() => ({
-        accept: 'program'
-    }));
 
     const StyledDesktop = styled.div`
         display: flex;
@@ -26,7 +22,7 @@ const Desktop = (props: DesktopProps) => {
     `;
 
     return (
-        <StyledDesktop ref={drop}>
+        <StyledDesktop>
             {children}
         </StyledDesktop>    
     )
@@ -117,32 +113,30 @@ const App = () => {
     ];
 
     return (
-        <DndProvider backend={HTML5Backend}>
-            <Desktop>
-                {
-                    menuOpen ? <Menu closeMenu={() => setMenuOpen(false)} menuOptions={menuOptions} ref={menuRef} /> : null
-                }
-                {
-                    pages['about'].open && pages['about'].state !== 'minimised' ? <Program contentId={'about'} name={'About'} close={closePage} minimise={minimisePage} maximise={maximisePage} pages={pages} /> : null
-                }
-                {
-                    pages['projects'].open && pages['projects'].state !== 'minimised' ? <Program contentId={'projects'} name={'My Projects'} close={closePage} minimise={minimisePage} maximise={maximisePage} pages={pages} /> : null
-                }
-                {
-                    pages['cv'].open && pages['cv'].state !== 'minimised' ? <Program contentId={'cv'} name={'My CV'} close={closePage} minimise={minimisePage} maximise={maximisePage} pages={pages} /> : null
-                }
-                {
-                    pages['webcode'].open && pages['webcode'].state !== 'minimised' ? <Program contentId={'webcode'} name={'Website Code'} close={closePage} minimise={minimisePage} maximise={maximisePage} pages={pages} /> : null
-                }
-                <IconContainer>
-                    <DesktopIcon text={'About Me'} iconName={'address_book_user'} onClick={() => openPage('about')} ref={dIAboutRef} />
-                    <DesktopIcon text={'Projects'} iconName={'windows_three'} onClick={() => openPage('projects')} ref={dIProjectsRef} />
-                    <DesktopIcon text={'CV'} iconName={'winrep-1'} onClick={() => openPage('cv')} ref={dICVRef} />
-                    <DesktopIcon text={'Website Code'} iconName={'channels_file-2'} onClick={() => openPage('webcode')} ref={dIWebCodeRef} />
-                </IconContainer>
-                <Taskbar setMenuOpen={setMenuOpen} menuOpen={menuOpen} pages={pages} openPage={openPage} minimisePage={minimisePage} />
-            </Desktop>
-        </DndProvider>
+        <Desktop>
+            {
+                menuOpen ? <Menu closeMenu={() => setMenuOpen(false)} menuOptions={menuOptions} ref={menuRef} /> : null
+            }
+            {
+                pages['about'].open && pages['about'].state !== 'minimised' ? <Program contentId={'about'} name={'About'} close={closePage} minimise={minimisePage} maximise={maximisePage} pages={pages} /> : null
+            }
+            {
+                pages['projects'].open && pages['projects'].state !== 'minimised' ? <Program contentId={'projects'} name={'My Projects'} close={closePage} minimise={minimisePage} maximise={maximisePage} pages={pages} /> : null
+            }
+            {
+                pages['cv'].open && pages['cv'].state !== 'minimised' ? <Program contentId={'cv'} name={'My CV'} close={closePage} minimise={minimisePage} maximise={maximisePage} pages={pages} /> : null
+            }
+            {
+                pages['webcode'].open && pages['webcode'].state !== 'minimised' ? <Program contentId={'webcode'} name={'Website Code'} close={closePage} minimise={minimisePage} maximise={maximisePage} pages={pages} /> : null
+            }
+            <IconContainer>
+                <DesktopIcon text={'About Me'} iconName={'address_book_user'} onClick={() => openPage('about')} ref={dIAboutRef} />
+                <DesktopIcon text={'Projects'} iconName={'windows_three'} onClick={() => openPage('projects')} ref={dIProjectsRef} />
+                <DesktopIcon text={'CV'} iconName={'winrep-1'} onClick={() => openPage('cv')} ref={dICVRef} />
+                <DesktopIcon text={'Website Code'} iconName={'channels_file-2'} onClick={() => openPage('webcode')} ref={dIWebCodeRef} />
+            </IconContainer>
+            <Taskbar setMenuOpen={setMenuOpen} menuOpen={menuOpen} pages={pages} openPage={openPage} minimisePage={minimisePage} />
+        </Desktop>
     );
 }
 
