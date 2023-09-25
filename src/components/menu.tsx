@@ -14,14 +14,14 @@ const MenuContainer = styled.div`
   border-radius: 0px;
   position: fixed;
   bottom: 0;
-  height: 14em;
+  height: 17em;
 
   @keyframes rollup {
     from {
       height: 0em;
     }
     to {
-      height: 14em;
+      height: 17em;
     }
   }
 
