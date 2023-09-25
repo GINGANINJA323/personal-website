@@ -2,10 +2,11 @@ import * as React from 'react';
 import { styled } from 'styled-components';
 import { PagesObject } from '../types';
 import Draggable from 'react-draggable';
-import { Resizable } from 'react-resizable';
+import { Resizable, ResizeCallbackData } from 'react-resizable';
 
 interface ProgramProps {
   contentId: string;
+  contentComponent?: JSX.Element;
   name: string;
   close: (page: string) => void;
   minimise: (page: string) => void;
@@ -54,7 +55,7 @@ const ProgramIFrame = styled.iframe`
 `
 
 const Program = (props: ProgramProps) => {
-  const { contentId, name, close, minimise, maximise, pages } = props;
+  const { contentId, name, close, minimise, maximise, pages, contentComponent } = props;
   const maximised = {width: window.innerWidth - 5, height: window.innerHeight - 30};
   const [size, setSize] = React.useState({width: 304, height: 164});
 
@@ -64,7 +65,7 @@ const Program = (props: ProgramProps) => {
     }
   }, [pages]);
 
-  const onResize = (event, { element, size, handle }) => {
+  const onResize = (event: React.SyntheticEvent, { size }: ResizeCallbackData) => {
     event.stopPropagation();
     setSize({width: size.width, height: size.height})
   }
@@ -81,7 +82,7 @@ const Program = (props: ProgramProps) => {
               <HeaderButton onClick={() => close(contentId)}>{'X'}</HeaderButton>
             </ProgramButtonContainer>
           </ProgramHeader>
-          <ProgramIFrame src={`/content/${contentId}.html`}></ProgramIFrame>
+          {contentComponent ? contentComponent : <ProgramIFrame src={`/content/${contentId}.html`}></ProgramIFrame>}
         </ProgramContainer>
       </Resizable>
     </Draggable>

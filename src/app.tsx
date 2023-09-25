@@ -6,6 +6,7 @@ import Program from './components/program';
 import Taskbar from './components/taskbar';
 import { PagesObject } from './types';
 import '../node_modules/react-resizable/css/styles.css';
+import GitHistory from './components/gitHistory';
 
 interface DesktopProps {
     children: (JSX.Element | null)[];
@@ -55,6 +56,11 @@ const App = () => {
             open: false,
             state: 'default',
             prevState: null
+        },
+        gitHistory: {
+            open: false,
+            state: 'default',
+            prevState: null
         }
     });
 
@@ -62,6 +68,7 @@ const App = () => {
     const dIProjectsRef = React.useRef(null);
     const dICVRef = React.useRef(null);
     const dIWebCodeRef = React.useRef(null);
+    const dIGitHistoryRef = React.useRef(null);
     const menuRef = React.useRef(null);
     
     // Uses the callback as pages was not being updated within the function
@@ -109,6 +116,11 @@ const App = () => {
             label: 'Website Code',
             icon: 'channels_file-2',
             onClick: () => openPage('webcode')
+        },
+        {
+            label: 'Recent Git Activity',
+            icon: 'channels_file-2',
+            onClick: () => openPage('gitHistory')
         }
     ];
 
@@ -129,11 +141,15 @@ const App = () => {
             {
                 pages['webcode'].open && pages['webcode'].state !== 'minimised' ? <Program contentId={'webcode'} name={'Website Code'} close={closePage} minimise={minimisePage} maximise={maximisePage} pages={pages} /> : null
             }
+            {
+                pages['gitHistory'].open && pages['gitHistory'].state !== 'minimised' ? <Program contentId={'gitHistory'} contentComponent={<GitHistory />} name={'Recent Git Activity'} close={closePage} minimise={minimisePage} maximise={maximisePage} pages={pages} /> : null
+            }
             <IconContainer>
                 <DesktopIcon text={'About Me'} iconName={'address_book_user'} onClick={() => openPage('about')} ref={dIAboutRef} />
                 <DesktopIcon text={'Projects'} iconName={'windows_three'} onClick={() => openPage('projects')} ref={dIProjectsRef} />
                 <DesktopIcon text={'CV'} iconName={'winrep-1'} onClick={() => openPage('cv')} ref={dICVRef} />
                 <DesktopIcon text={'Website Code'} iconName={'channels_file-2'} onClick={() => openPage('webcode')} ref={dIWebCodeRef} />
+                <DesktopIcon text={'Recent Git Activity'} iconName={'channels_file-2'} onClick={() => openPage('gitHistory')} ref={dIGitHistoryRef} />
             </IconContainer>
             <Taskbar setMenuOpen={setMenuOpen} menuOpen={menuOpen} pages={pages} openPage={openPage} minimisePage={minimisePage} />
         </Desktop>
