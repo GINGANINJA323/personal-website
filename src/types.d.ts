@@ -7,8 +7,8 @@ export interface MenuOptionType {
 interface PagesObject {
   [key: string]: {
     open: boolean;
-    state: 'minimised' | 'maximised' | 'default';
-    prevState: 'minimised' | 'maximised' | 'default' | null;
+    state: 'minimised' | 'maximised' | 'default' | 'focused';
+    prevState: 'minimised' | 'maximised' | 'default' | 'focused' | null;
   }
 }
 

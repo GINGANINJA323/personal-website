@@ -11,4 +11,4 @@ It is based around a retro Windows desktop, with programs acting as pages.
 
 ## Prerequisites
 
-Requires Node 18. This project has an `nvmrc`, so you can run `nvm use` from the project root provided you have [NVM](https://github.com/nvm-sh/nvm) installed.
+Requires Node 22. This project has an `nvmrc`, so you can run `nvm use` from the project root provided you have [NVM](https://github.com/nvm-sh/nvm) installed.
